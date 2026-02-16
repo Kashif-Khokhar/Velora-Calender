@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/velora_brand_icon.svg';
 import { PlusCircle, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,7 +12,7 @@ export default function Navbar() {
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2 text-xl font-bold text-slate-900 group">
           <div className="bg-orange-100 p-2 rounded-lg group-hover:bg-orange-200 transition-colors">
-            <img src="/src/assets/velora_brand_icon.svg" alt="Velora Logo" className="w-8 h-8 object-contain" />
+            <img src={logo} alt="Velora Logo" className="w-8 h-8 object-contain" />
           </div>
           <span className="bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Velora</span>
         </Link>

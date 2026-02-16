@@ -1,5 +1,6 @@
 import { Github, Linkedin, Twitter, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/velora_brand_icon.svg';
 
 export default function Footer() {
     return (
@@ -11,7 +12,7 @@ export default function Footer() {
                 {/* Brand Section */}
                 <div className="col-span-1 md:col-span-1">
                     <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-rose-600 bg-clip-text text-transparent mb-4 flex items-center gap-2">
-                        <img src="/src/assets/velora_brand_icon.svg" alt="Velora Logo" className="w-8 h-8 object-contain" />
+                        <img src={logo} alt="Velora Logo" className="w-8 h-8 object-contain" />
                         Velora
                     </h3>
                     <p className="text-slate-600 mb-6 leading-relaxed">
