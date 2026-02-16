@@ -2,7 +2,6 @@
 
 Velora (formerly EvitePro) is a modern, premium event invitation platform designed to create stunning, animated digital invites for any occasion. Built with React, Tailwind CSS, and Framer Motion, it offers a seamless and visually captivating experience for hosts and guests alike.
 
-![Velora Banner](https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80)
 
 ## ✨ Features
 
