@@ -120,7 +120,7 @@ export default function Home() {
                 <TemplatePreview 
                     title="Summer Bash" 
                     category="Party" 
-                    image="https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?auto=format&fit=crop&w=800&q=80"
+                    image="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=80"
                     delay={0.4}
                 />
             </div>

@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Gift, Heart, Music, Cake, Sun, GlassWater, Plane, Laptop, Trophy } from 'lucide-react';
+import { Cake, Sun, Heart, Laptop, GlassWater, Gift, Music, Trophy, Plane, Camera } from 'lucide-react';
 
 const categories = ["All", "Birthday", "Wedding", "Party", "Professional", "Holiday"];
 
 const templates = [
-  { id: 1, title: 'Neon Birthday', category: 'Birthday', icon: <Cake className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=800&q=80" },
-  { id: 2, title: 'Summer Bash', category: 'Party', icon: <Sun className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?auto=format&fit=crop&w=800&q=80" },
-  { id: 3, title: 'Wedding Bliss', category: 'Wedding', icon: <Heart className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" },
-  { id: 4, title: 'Tech Conference', category: 'Professional', icon: <Laptop className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&w=800&q=80" },
-  { id: 5, title: 'Cocktail Night', category: 'Party', icon: <GlassWater className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=800&q=80" },
-  { id: 6, title: 'Holiday Feast', category: 'Holiday', icon: <Gift className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=800&q=80" },
-  { id: 7, title: 'Live Concert', category: 'Party', icon: <Music className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80" },
-  { id: 8, title: 'Award Ceremony', category: 'Professional', icon: <Trophy className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1618331835717-801e976710b2?auto=format&fit=crop&w=800&q=80" },
-  { id: 9, title: 'Island Wedding', category: 'Wedding', icon: <Plane className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" },
+  { id: 1, title: 'Neon Birthday', category: 'Birthday', theme: 'birthday', icon: <Cake className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=800&q=80" },
+  { id: 2, title: 'Summer Bash', category: 'Party', theme: 'summer', icon: <Sun className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=80" },
+  { id: 3, title: 'Wedding Bliss', category: 'Wedding', theme: 'wedding', icon: <Heart className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" },
+  { id: 4, title: 'Tech Conference', category: 'Professional', theme: 'tech', icon: <Laptop className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&w=800&q=80" },
+  { id: 5, title: 'Cocktail Night', category: 'Party', theme: 'summer', icon: <GlassWater className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=800&q=80" },
+  { id: 6, title: 'Holiday Feast', category: 'Holiday', theme: 'birthday', icon: <Gift className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=800&q=80" },
+  { id: 7, title: 'Live Concert', category: 'Party', theme: 'tech', icon: <Music className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80" },
+  { id: 8, title: 'Award Ceremony', category: 'Professional', theme: 'tech', icon: <Trophy className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1618331835717-801e976710b2?auto=format&fit=crop&w=800&q=80" },
+  { id: 9, title: 'Island Wedding', category: 'Wedding', theme: 'wedding', icon: <Plane className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" },
+  { id: 10, title: 'Scrapbook Birthday', category: 'Birthday', theme: 'scrapbook', icon: <Camera className="w-5 h-5 text-white"/>, image: "https://images.unsplash.com/photo-1530103043960-ef38714abb15?auto=format&fit=crop&w=800&q=80" },
 ];
 
 export default function Templates() {
@@ -78,7 +79,7 @@ export default function Templates() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
               >
-                <Link to="/editor" className="block group">
+                <Link to={`/editor?theme=${template.theme}&title=${encodeURIComponent(template.title)}`} className="block group">
                   <div className={`aspect-[4/5] bg-slate-900 rounded-3xl relative overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300`}>
                     
                     {/* Background Image */}
