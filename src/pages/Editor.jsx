@@ -6,9 +6,16 @@ import {
   MapPin, Check, Cake, Heart, Sun, Laptop, Image as ImageIcon, Upload, Camera,
   GraduationCap, Baby, Sparkles, Leaf, Zap, ChevronLeft, ChevronRight
 } from 'lucide-react';
-import domtoimage from 'dom-to-image-more';
+import { toPng } from 'html-to-image';
 
-// ─── Date / Time Helpers ─────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const hexToRgba = (hex, alpha) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 const formatDateDisplay = (iso) => {
   if (!iso) return '';
   const [y, m, d] = iso.split('-');
@@ -45,45 +52,67 @@ const MiniCalendar = ({ theme, dateIso }) => {
   const sec = theme.secondary || theme.primary;
 
   return (
-    <div style={{ width:'100%', maxWidth:'240px', borderRadius:'16px', overflow:'hidden',
-      background:'white', boxShadow:'0 8px 24px rgba(0,0,0,0.12)', border:'1px solid rgba(255,255,255,0.8)' }}>
+    <div style={{ 
+      width: '100%', 
+      maxWidth: '240px', 
+      borderRadius: '16px', 
+      overflow: 'hidden',
+      background: '#ffffff', 
+      boxShadow: '0 8px 24px rgba(0,0,0,0.12)', 
+      border: '1px solid rgba(0,0,0,0.05)' 
+    }}>
 
       {/* Gradient header */}
-      <div style={{ padding:'10px 14px', display:'flex', justifyContent:'space-between', alignItems:'center',
-        background:`linear-gradient(135deg, ${pri}, ${sec})` }}>
+      <div style={{ 
+        padding: '12px 16px', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        background: `linear-gradient(135deg, ${pri}, ${sec})` 
+      }}>
         <div>
-          <div style={{ color:'rgba(255,255,255,0.7)', fontSize:'8px', fontWeight:800, textTransform:'uppercase', letterSpacing:'0.1em', lineHeight:1 }}>Month</div>
-          <div style={{ color:'white', fontSize:'17px', fontWeight:900, lineHeight:1.2 }}>{MONTH_NAMES[month]}</div>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '8px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1 }}>Month</div>
+          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 900, lineHeight: 1.2 }}>{MONTH_NAMES[month]}</div>
         </div>
-        <div style={{ textAlign:'right' }}>
-          <div style={{ color:'rgba(255,255,255,0.7)', fontSize:'8px', fontWeight:800, textTransform:'uppercase', letterSpacing:'0.1em', lineHeight:1 }}>Year</div>
-          <div style={{ color:'white', fontSize:'17px', fontWeight:900, lineHeight:1.2 }}>{year}</div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '8px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1 }}>Year</div>
+          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 900, lineHeight: 1.2 }}>{year}</div>
         </div>
       </div>
 
       {/* Body */}
-      <div style={{ padding:'8px 10px 10px' }}>
+      <div style={{ padding: '10px 12px 12px' }}>
         {/* Weekday row */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(7,1fr)', marginBottom:'3px' }}>
-          {days.map((d,i) => (
-            <div key={i} style={{ textAlign:'center', fontSize:'10px', fontWeight:800, padding:'3px 0',
-              color: (i===0||i===6) ? pri : '#94a3b8' }}>{d}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', marginBottom: '5px' }}>
+          {days.map((d, i) => (
+            <div key={i} style={{ 
+              textAlign: 'center', 
+              fontSize: '10px', 
+              fontWeight: 800, 
+              padding: '4px 0',
+              color: (i === 0 || i === 6) ? pri : '#94a3b8' 
+            }}>{d}</div>
           ))}
         </div>
         {/* Day cells */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(7,1fr)', rowGap:'2px' }}>
-          {cells.map((d,i) => {
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', rowGap: '3px' }}>
+          {cells.map((d, i) => {
             const isSelected = d === selectedDay;
-            const isWeekend  = (i%7===0 || i%7===6) && d !== null;
+            const isWeekend  = (i % 7 === 0 || i % 7 === 6) && d !== null;
             return (
-              <div key={i} style={{ display:'flex', alignItems:'center', justifyContent:'center', padding:'2px 0' }}>
+              <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2px 0' }}>
                 <div style={{
-                  width:'26px', height:'26px',
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  borderRadius:'50%', fontSize:'11px', fontWeight:700,
-                  background: isSelected ? `linear-gradient(135deg,${pri},${sec})` : 'transparent',
-                  color: isSelected ? 'white' : (!d ? 'transparent' : isWeekend ? pri : '#475569'),
-                  boxShadow: isSelected ? `0 3px 8px ${pri}55` : 'none',
+                  width: '28px', 
+                  height: '28px',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  borderRadius: '50%', 
+                  fontSize: '11px', 
+                  fontWeight: 800,
+                  background: isSelected ? `linear-gradient(135deg, ${pri}, ${sec})` : 'transparent',
+                  color: isSelected ? '#ffffff' : (!d ? 'transparent' : isWeekend ? pri : '#475569'),
+                  boxShadow: isSelected ? `0 4px 10px ${hexToRgba(pri, 0.4)}` : 'none',
                   transform: isSelected ? 'scale(1.1)' : 'none',
                 }}>{d ?? ''}</div>
               </div>
@@ -93,7 +122,7 @@ const MiniCalendar = ({ theme, dateIso }) => {
       </div>
 
       {/* Footer bar */}
-      <div style={{ height:'3px', background:`linear-gradient(90deg, ${pri}, ${sec}44)` }} />
+      <div style={{ height: '4px', background: `linear-gradient(90deg, ${pri}, ${hexToRgba(sec, 0.2)})` }} />
     </div>
   );
 };
@@ -296,83 +325,135 @@ const ScrapbookPreview = ({ theme, formData, imagePreview, imagePreview2 }) => (
     </div>
 
     {/* Happy Birthday title */}
-    <div style={{ paddingTop:'16px', display:'flex', flexDirection:'column', alignItems:'center' }}>
-      <div style={{ display:'flex', gap:'2px', marginBottom:0 }}>
-        {['H','a','P','p','Y'].map((l, i) => (
+    <div style={{ paddingTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+      <div style={{ display: 'flex', gap: '4px', marginBottom: 0 }}>
+        {['H', 'a', 'P', 'p', 'Y'].map((l, i) => (
           <span key={i} style={{
-            background:'white', padding:'0 4px', border:'1px solid #cbd5e1',
-            boxShadow:'0 1px 3px rgba(0,0,0,0.1)',
-            fontSize:'28px', fontWeight:900, color:'#1e293b', lineHeight:1.2,
-            transform:`rotate(${(i%2===0?-1:1)*(2+i)}deg)`,
-            display:'inline-block',
+            background: '#ffffff',
+            padding: '2px 6px',
+            border: '1.5px solid #cbd5e1',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            fontSize: '24px',
+            fontWeight: 900,
+            color: '#1e293b',
+            lineHeight: 1,
+            transform: `rotate(${(i % 2 === 0 ? -1 : 1) * (3 + i)}deg)`,
+            display: 'inline-block',
           }}>{l}</span>
         ))}
       </div>
-      <div style={{ display:'flex', gap:'2px', marginTop:'-4px' }}>
-        {['B','I','R','T','H','D','A','Y'].map((l, i) => (
+      <div style={{ display: 'flex', gap: '3px', marginTop: '-2px' }}>
+        {['B', 'I', 'R', 'T', 'H', 'D', 'A', 'Y'].map((l, i) => (
           <span key={i} style={{
-            background:'white', padding:'0 4px', border:'2px solid #94a3b8',
-            boxShadow:'0 2px 6px rgba(0,0,0,0.12)',
-            fontSize:'34px', fontWeight:900, color:'#0f172a', lineHeight:1.2,
-            transform:`rotate(${(i%2===0?1:-1)*(1+(i%3))}deg)`,
-            display:'inline-block',
+            background: '#ffffff',
+            padding: '2px 5px',
+            border: '2px solid #94a3b8',
+            boxShadow: '0 3px 6px rgba(0,0,0,0.15)',
+            fontSize: '28px', // slightly smaller to be extra safe
+            fontWeight: 900,
+            color: '#0f172a',
+            lineHeight: 1,
+            transform: `rotate(${(i % 2 === 0 ? 1 : -1) * (2 + (i % 3))}deg)`,
+            display: 'inline-block',
           }}>{l}</span>
         ))}
       </div>
     </div>
 
-    {/* Main content row */}
-    <div style={{ display:'flex', flex:1, width:'100%', gap:'12px', padding:'12px', alignItems:'center' }}>
+    {/* Main content row - Photos are now much more prominent */}
+    <div style={{ display: 'flex', flex: 1, width: '100%', gap: '8px', padding: '10px 8px', alignItems: 'center' }}>
 
-      {/* Left: polaroid photos */}
-      <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:'12px' }}>
-        {/* Tall polaroid */}
-        <div style={{ position:'relative', width:'100%', aspectRatio:'4/5', background:'#f1f5f9',
-          border:'4px solid white', boxShadow:'0 10px 25px rgba(0,0,0,0.15)',
-          transform:'rotate(-4deg)', overflow:'hidden' }}>
+      {/* Column for greatly enlarged photos */}
+      <div style={{ flex: 2.2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+        {/* Large Tall polaroid */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '1/1.25', 
+          background: '#f8fafc',
+          border: '10px solid #ffffff',
+          boxShadow: '0 15px 40px rgba(0,0,0,0.22)',
+          transform: 'rotate(-4deg)',
+          overflow: 'hidden',
+          zIndex: 5
+        }}>
           {imagePreview ? (
-            <img src={imagePreview} alt="Photo 1" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            <img src={imagePreview} alt="Photo 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
-            <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', color:'#cbd5e1' }}>
-              <ImageIcon style={{ width:'40px', height:'40px' }} />
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1' }}>
+              <ImageIcon style={{ width: '60px', height: '60px' }} />
             </div>
           )}
           {/* Tape strip */}
-          <div style={{ position:'absolute', top:'-8px', left:'50%', transform:'translateX(-50%) rotate(-2deg)',
-            width:'56px', height:'20px', background:'rgba(254,243,199,0.7)', borderRadius:'2px' }} />
+          <div style={{
+            position: 'absolute',
+            top: '-15px',
+            left: '50%',
+            transform: 'translateX(-50%) rotate(-2deg)',
+            width: '80px',
+            height: '30px',
+            background: 'rgba(254,243,199,0.8)',
+            borderRadius: '2px',
+            zIndex: 10
+          }} />
         </div>
-        {/* Wide polaroid */}
-        <div style={{ position:'relative', width:'75%', aspectRatio:'4/3', background:'#f1f5f9',
-          border:'4px solid white', boxShadow:'0 8px 20px rgba(0,0,0,0.12)',
-          transform:'rotate(3deg)', overflow:'hidden' }}>
+        
+        {/* Large Wide polaroid */}
+        <div style={{
+          position: 'relative',
+          width: '95%',
+          aspectRatio: '1.2/1', 
+          background: '#f8fafc',
+          border: '8px solid #ffffff',
+          boxShadow: '0 12px 28px rgba(0,0,0,0.2)',
+          transform: 'rotate(5deg)',
+          overflow: 'hidden',
+          marginTop: '-15px'
+        }}>
           {imagePreview2 ? (
-            <img src={imagePreview2} alt="Photo 2" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            <img src={imagePreview2} alt="Photo 2" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
-            <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', color:'#cbd5e1' }}>
-              <ImageIcon style={{ width:'32px', height:'32px' }} />
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1' }}>
+              <ImageIcon style={{ width: '40px', height: '40px' }} />
             </div>
           )}
         </div>
       </div>
 
-      {/* Right: date + calendar + dots */}
-      <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:'16px' }}>
-        <div style={{ fontStyle:'italic', fontSize:'28px', fontFamily:'Georgia, serif', color:'#1e293b',
-          transform:'rotate(-6deg)', fontWeight:400 }}>
+      {/* Right Column: Calendar (Scaled down a bit to give room to boy photos) */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+        <div style={{
+          fontStyle: 'italic',
+          fontSize: '28px',
+          fontFamily: 'serif',
+          color: '#1e293b',
+          transform: 'rotate(-6deg)',
+          fontWeight: 800,
+          textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
+        }}>
           {formatDateDisplay(formData.date).split(',')[0]}
         </div>
-        <div style={{ position:'relative', width:'100%' }}>
+        
+        <div style={{ position: 'relative', width: '100%', transform: 'scale(0.9)', transformOrigin: 'center' }}>
           <MiniCalendar theme={theme} dateIso={formData.date} />
-          <div style={{ position:'absolute', top:'-12px', right:'-12px', width:'32px', height:'32px',
-            transform:'rotate(12deg)', opacity:0.8 }}>
-            <Cake style={{ width:'100%', height:'100%', color:'#f59e0b' }} />
+          <div style={{
+            position: 'absolute',
+            top: '-15px',
+            right: '-15px',
+            width: '40px',
+            height: '40px',
+            transform: 'rotate(15deg)',
+            opacity: 0.95
+          }}>
+            <Cake style={{ width: '100%', height: '100%', color: '#f59e0b' }} />
           </div>
         </div>
+
         {/* Decorative dots */}
-        <div style={{ display:'flex', gap:'8px', justifyContent:'flex-end', width:'100%', paddingRight:'4px' }}>
-          <div style={{ width:'14px', height:'14px', borderRadius:'50%', background:'#f87171', boxShadow:'0 1px 2px rgba(0,0,0,0.08)' }} />
-          <div style={{ width:'14px', height:'14px', borderRadius:'50%', background:'#fbbf24', boxShadow:'0 1px 2px rgba(0,0,0,0.08)' }} />
-          <div style={{ width:'14px', height:'14px', borderRadius:'50%', background:'#4ade80', boxShadow:'0 1px 2px rgba(0,0,0,0.08)' }} />
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', width: '100%' }}>
+          <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#f87171', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+          <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#fbbf24', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+          <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#4ade80', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
         </div>
       </div>
     </div>
@@ -700,12 +781,17 @@ export default function Editor() {
     if (!previewRef.current) return;
     try {
       const node = previewRef.current;
-      const dataUrl = await domtoimage.toPng(node, {
+      
+      const dataUrl = await toPng(node, {
+        pixelRatio: 2,
         cacheBust: true,
-        bgcolor: '#ffffff',
+        style: {
+          borderRadius: '0', // Ensure card edge is crisp
+        }
       });
+
       const link = document.createElement('a');
-      link.href     = dataUrl;
+      link.href = dataUrl;
       link.download = `${formData.title.replace(/\s+/g, '_')}_card.png`;
       link.click();
     } catch (_err) {
@@ -921,16 +1007,18 @@ export default function Editor() {
             className="w-full relative z-10"
             style={{ maxWidth: '420px' }}
           >
-            <div
-              ref={previewRef}
-              className="w-full rounded-3xl shadow-2xl relative overflow-hidden flex flex-col items-center justify-center text-center p-8 border"
-              style={{
-                minHeight: '520px',
-                background: theme.layout === 'scrapbook' ? '#fafaf9' : theme.cardBg || 'white',
-                borderColor: theme.dark ? 'rgba(255,255,255,0.08)' : '#f1f5f9',
-              }}
-            >
-              {renderPreview()}
+            <div className="w-full rounded-3xl shadow-2xl relative overflow-hidden flex flex-col items-center justify-center text-center p-8 border border-slate-100 bg-white">
+              <div
+                ref={previewRef}
+                className="w-full relative flex flex-col items-center justify-center text-center capture-reset"
+                style={{
+                  width: '350px',
+                  minHeight: '500px',
+                  background: theme.layout === 'scrapbook' ? '#ffffff' : theme.cardBg || '#ffffff',
+                }}
+              >
+                {renderPreview()}
+              </div>
             </div>
 
             {/* Theme label badge below preview */}

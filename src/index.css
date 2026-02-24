@@ -44,3 +44,10 @@ label,
 [tabindex]:not([tabindex="-1"]) {
   cursor: pointer;
 }
+
+/* Fix for OKLCH leakage in html-to-image/dom-to-image */
+.capture-reset,
+.capture-reset * {
+  border-color: rgba(0, 0, 0, 0.1);
+  outline-color: transparent;
+}

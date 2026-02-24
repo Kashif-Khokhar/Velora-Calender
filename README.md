@@ -1,33 +1,33 @@
-# Velora | Elegant Event Invitations
+# Velora | Premium Digital Invitations
 
-Velora (formerly EvitePro) is a modern, premium event invitation platform designed to create stunning, animated digital invites for any occasion. Built with React, Tailwind CSS, and Framer Motion, it offers a seamless and visually captivating experience for hosts and guests alike.
+Velora is a sophisticated event invitation platform designed for creating stunning, animated digital invites. From elegant weddings to handcrafted scrapbook birthdays, Velora turns every invitation into a memorable experience.
 
+![Preview](https://images.unsplash.com/photo-1530103043960-ef38714abb15?auto=format&fit=crop&w=1200&q=80)
 
-## ✨ Features
+## ✨ Unique Features
 
-- **Beautiful Templates**: A curated collection of animated templates for Birthdays, Weddings, Parties, and Corporate Events.
-- **Featured Designs**: Showcase of top-rated, visually stunning templates on the home page.
-- **Live Customization**: Real-time editor to personalize text, colors, and details.
-- **Glassmorphism UI**: A modern, frosted-glass aesthetic found throughout the application.
-- **Testimonials**: Real feedback from happy hosts and planners.
-- **Interactive Elements**: Smooth animations and hover effects using Framer Motion.
-- **Mobile First**: Fully responsive design that looks great on any device.
-- **Live Calendar**: An interactive calendar feature to manage event dates.
+- **Exclusive Scrapbook Theme**: Handcrafted birthday collages featuring dual photo uploads, hand-drawn elements, and a handcrafted "Happy Birthday" title.
+- **High-Resolution Exports**: Download your cards in crisp, high-quality PNG format at 2x resolution—perfect for sharing or printing.
+- **Pixel-Perfect Rendering**: Precision-engineered layouts that look identical in the browser and in the final download, thanks to our specialized rendering engine.
+- **Modern Tech-Infused UI**: Sleek Aurora Red and Sunset Gold themes with advanced glassmorphism and animations.
+- **Dynamic Mini-Calendar**: An beautifully styled interactive calendar that dynamically highlights your event date.
+- **Mobile-Optimized Experience**: A fully responsive interface with a seamless "Floating Island" navigation system.
 
-## 🛠️ Tech Stack
+## 🛠️ Performance Tech Stack
 
-- **Frontend**: [React](https://reactjs.org/) (Vite)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Framework**: [React 19](https://reactjs.org/) (Vite)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Image Generation**: [html-to-image](https://github.com/bubkoo/html-to-image)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Routing**: [React Router](https://reactrouter.com/)
+- **State & Routing**: [React Router](https://reactrouter.com/)
 
-## 🚀 Getting Started
+## 🚀 Installation & Setup
 
-1.  **Clone the repository:**
+1.  **Clone build:**
     ```bash
-    git clone https://github.com/yourusername/velora.git
-    cd velora
+    git clone https://github.com/Kashif-Khokhar/Calender.git
+    cd Calender
     ```
 
 2.  **Install dependencies:**
@@ -35,36 +35,27 @@ Velora (formerly EvitePro) is a modern, premium event invitation platform design
     npm install
     ```
 
-3.  **Run the development server:**
+3.  **Launch dev environment:**
     ```bash
     npm run dev
     ```
 
-4.  **Build for production:**
+4.  **Production build:**
     ```bash
     npm run build
     ```
 
-## 📂 Project Structure
+## 📂 Design Architecture
 
-```
-src/
-├── components/     # Reusable UI components (Footer, Navbar, Layout, etc.)
-├── pages/          # Application pages (Home, Templates, Editor, etc.)
-├── assets/         # Static assets
-└── App.jsx         # Main application component & routing
-```
+Velora's architecture is focused on visual consistency and export fidelity:
 
-## 🎨 Theme
-
-Velora uses a "Warm Sunset" color palette, customized in `tailwind.config.js`:
-- **Primary**: Orange & Rose gradients
-- **Background**: Soft warm grays and whites
-- **Accents**: Amber and Gold
+- `src/pages/Editor.jsx`: The heart of the app, featuring multiple layout engines including the high-fidelity Scrapbook system.
+- `src/index.css`: Modern global theme definitions using Tailwind v4's high-performance CSS variables.
+- Specialized Inline Rendering: Critical components use sanitized inline styles to ensure zero-distortion during SVG/PNG conversion.
 
 ## 📄 License
 
 This project is licensed under the MIT License.
 
 ---
-*Made with ❤️ by Kashif Khokhar*
+*Developed with ❤️ by [Kashif Khokhar](https://github.com/Kashif-Khokhar)*
