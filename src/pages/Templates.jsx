@@ -10,6 +10,14 @@ const categories = ["All", "Birthday", "Wedding", "Party", "Professional", "Holi
 
 const templates = [
   { 
+    id: 10, title: 'Scrapbook Birthday', category: 'Birthday', theme: 'scrapbook',
+    defaultTitle: "Emma's Birthday Bash 🎉",
+    description: 'Add two personal photos to a handcrafted polaroid collage — the most heartfelt birthday wish card.',
+    icon: <Camera className="w-5 h-5 text-white"/>, 
+    image: "https://images.unsplash.com/photo-1530103043960-ef38714abb15?auto=format&fit=crop&w=800&q=80",
+    isNew: false, isFeatured: true, rating: 5.0, uses: '20k'
+  },
+  { 
     id: 1, title: 'Neon Birthday', category: 'Birthday', theme: 'birthday',
     defaultTitle: "Alex's 25th Birthday 🎂",
     icon: <Cake className="w-5 h-5 text-white"/>, 
@@ -71,13 +79,6 @@ const templates = [
     icon: <Plane className="w-5 h-5 text-white"/>, 
     image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80",
     isNew: false, rating: 4.9, uses: '14k'
-  },
-  { 
-    id: 10, title: 'Scrapbook Birthday', category: 'Birthday', theme: 'scrapbook',
-    defaultTitle: "Emma's Birthday Bash 🎉",
-    icon: <Camera className="w-5 h-5 text-white"/>, 
-    image: "https://images.unsplash.com/photo-1530103043960-ef38714abb15?auto=format&fit=crop&w=800&q=80",
-    isNew: false, rating: 4.8, uses: '10k'
   },
   { 
     id: 11, title: 'Graduation Day', category: 'Special', theme: 'gala',
@@ -223,9 +224,11 @@ export default function Templates() {
                 transition={{ duration: 0.25, delay: i * 0.04 }}
                 onHoverStart={() => setHoveredId(template.id)}
                 onHoverEnd={() => setHoveredId(null)}
+                className={template.isFeatured ? 'md:col-span-2 xl:col-span-2' : ''}
               >
                 <Link to={`/editor?theme=${template.theme}&title=${encodeURIComponent(template.defaultTitle)}`} className="block group">
-                  <div className="relative aspect-[3/4] bg-slate-900 rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-400">
+                  <div className={`relative bg-slate-900 rounded-2xl overflow-hidden group-hover:-translate-y-2 transition-all duration-400 ${template.isFeatured ? 'aspect-[16/9]' : 'aspect-[3/4]'}`}
+                    style={template.isFeatured ? { boxShadow: '0 0 0 2px #f97316, 0 25px 50px rgba(249,115,22,0.3)' } : { boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}>
                     
                     {/* Background Image */}
                     <img 
@@ -236,23 +239,41 @@ export default function Templates() {
                     
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/10 group-hover:from-black/90 transition-all duration-400" />
+
+                    {/* Featured shimmer border */}
+                    {template.isFeatured && (
+                      <div className="absolute inset-0 rounded-2xl pointer-events-none"
+                        style={{ background: 'linear-gradient(135deg, rgba(249,115,22,0.15) 0%, transparent 50%, rgba(249,115,22,0.15) 100%)' }} />
+                    )}
                     
                     {/* Top Badges */}
                     <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-20">
                       {/* Icon Badge */}
-                      <div className="w-10 h-10 bg-white/15 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/25 shadow-lg">
+                      <div className="w-10 h-10 bg-white/15 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/25"
+                        style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
                         {template.icon}
                       </div>
-                      {/* NEW badge */}
-                      {template.isNew && (
+                      {/* Featured / NEW badge */}
+                      {template.isFeatured ? (
+                        <motion.div
+                          initial={{ scale: 0.8 }}
+                          animate={{ scale: [1, 1.05, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="px-3 py-1.5 rounded-full text-[11px] font-black text-white tracking-wider"
+                          style={{ background: 'linear-gradient(135deg, #f97316, #e11d48)', boxShadow: '0 4px 16px rgba(249,115,22,0.5)' }}
+                        >
+                          ⭐ FEATURED
+                        </motion.div>
+                      ) : template.isNew ? (
                         <motion.div 
                           initial={{ scale: 0.8 }}
                           animate={{ scale: 1 }}
-                          className="px-2.5 py-1 bg-gradient-to-r from-orange-500 to-rose-500 rounded-full text-[10px] font-black text-white tracking-wider shadow-lg shadow-orange-500/40"
+                          className="px-2.5 py-1 rounded-full text-[10px] font-black text-white tracking-wider"
+                          style={{ background: 'linear-gradient(135deg, #f97316, #e11d48)', boxShadow: '0 4px 12px rgba(249,115,22,0.4)' }}
                         >
                           ✦ NEW
                         </motion.div>
-                      )}
+                      ) : null}
                     </div>
 
                     {/* Bottom Info */}
@@ -260,9 +281,12 @@ export default function Templates() {
                       <span className="inline-block px-2.5 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black tracking-widest uppercase text-white/90 mb-2.5 border border-white/15">
                         {template.category}
                       </span>
-                      <h3 className="text-xl font-black text-white mb-2 leading-tight">
+                      <h3 className={`font-black text-white mb-1 leading-tight ${template.isFeatured ? 'text-3xl' : 'text-xl'}`}>
                         {template.title}
                       </h3>
+                      {template.isFeatured && template.description && (
+                        <p className="text-white/70 text-sm font-medium mb-2 max-w-md">{template.description}</p>
+                      )}
                       
                       {/* Stats row */}
                       <div className="flex items-center justify-between">
@@ -270,10 +294,10 @@ export default function Templates() {
                         <span className="text-[11px] text-white/60 font-medium">{template.uses} uses</span>
                       </div>
 
-                      {/* CTA - slides up on hover */}
-                      <div className="flex items-center gap-1.5 mt-3 text-sm font-bold text-orange-400 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300">
-                        <span>Customize Template</span>
-                        <ArrowRight className="w-4 h-4" />
+                      {/* CTA */}
+                      <div className={`flex items-center gap-1.5 mt-3 font-bold text-orange-400 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 ${template.isFeatured ? 'text-base' : 'text-sm'}`}>
+                        <span>{template.isFeatured ? 'Create Birthday Wish Card' : 'Customize Template'}</span>
+                        <ArrowRight className={template.isFeatured ? 'w-5 h-5' : 'w-4 h-4'} />
                       </div>
                     </div>
 

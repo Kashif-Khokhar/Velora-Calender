@@ -30,78 +30,70 @@ const formatTimeDisplay = (t) => {
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 const MiniCalendar = ({ theme, dateIso }) => {
-  const parsed = dateIso ? new Date(dateIso + 'T00:00:00') : new Date();
+  const parsed     = dateIso ? new Date(dateIso + 'T00:00:00') : new Date();
   const year        = parsed.getFullYear();
   const month       = parsed.getMonth();
   const selectedDay = parsed.getDate();
-
   const daysInMonth  = new Date(year, month + 1, 0).getDate();
   const firstWeekday = new Date(year, month, 1).getDay();
-
-  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const days  = ['S','M','T','W','T','F','S'];
   const cells = [
     ...Array(firstWeekday).fill(null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
   ];
+  const pri = theme.primary;
+  const sec = theme.secondary || theme.primary;
 
   return (
-    <div className="w-full rounded-2xl overflow-hidden border border-white/80"
-      style={{ maxWidth: '260px', background: 'white', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.08)' }}>
+    <div style={{ width:'100%', maxWidth:'240px', borderRadius:'16px', overflow:'hidden',
+      background:'white', boxShadow:'0 8px 24px rgba(0,0,0,0.12)', border:'1px solid rgba(255,255,255,0.8)' }}>
 
-      {/* Header */}
-      <div className="px-4 py-3 flex justify-between items-center"
-        style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary || theme.primary}cc)` }}>
+      {/* Gradient header */}
+      <div style={{ padding:'10px 14px', display:'flex', justifyContent:'space-between', alignItems:'center',
+        background:`linear-gradient(135deg, ${pri}, ${sec})` }}>
         <div>
-          <p className="text-white/70 text-[9px] font-bold uppercase tracking-widest leading-none">Month</p>
-          <p className="text-white text-lg font-black leading-tight">{MONTH_NAMES[month]}</p>
+          <div style={{ color:'rgba(255,255,255,0.7)', fontSize:'8px', fontWeight:800, textTransform:'uppercase', letterSpacing:'0.1em', lineHeight:1 }}>Month</div>
+          <div style={{ color:'white', fontSize:'17px', fontWeight:900, lineHeight:1.2 }}>{MONTH_NAMES[month]}</div>
         </div>
-        <div className="text-right">
-          <p className="text-white/70 text-[9px] font-bold uppercase tracking-widest leading-none">Year</p>
-          <p className="text-white text-lg font-black leading-tight">{year}</p>
+        <div style={{ textAlign:'right' }}>
+          <div style={{ color:'rgba(255,255,255,0.7)', fontSize:'8px', fontWeight:800, textTransform:'uppercase', letterSpacing:'0.1em', lineHeight:1 }}>Year</div>
+          <div style={{ color:'white', fontSize:'17px', fontWeight:900, lineHeight:1.2 }}>{year}</div>
         </div>
       </div>
 
       {/* Body */}
-      <div className="px-3 py-2.5">
-        {/* Weekday labels */}
-        <div className="grid grid-cols-7 mb-1">
-          {days.map((d, i) => (
-            <span key={i} className="text-center text-[10px] font-black py-1"
-              style={{ color: i === 0 || i === 6 ? theme.primary : '#94a3b8' }}>
-              {d}
-            </span>
+      <div style={{ padding:'8px 10px 10px' }}>
+        {/* Weekday row */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(7,1fr)', marginBottom:'3px' }}>
+          {days.map((d,i) => (
+            <div key={i} style={{ textAlign:'center', fontSize:'10px', fontWeight:800, padding:'3px 0',
+              color: (i===0||i===6) ? pri : '#94a3b8' }}>{d}</div>
           ))}
         </div>
-
         {/* Day cells */}
-        <div className="grid grid-cols-7 gap-y-0.5">
-          {cells.map((d, i) => {
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(7,1fr)', rowGap:'2px' }}>
+          {cells.map((d,i) => {
             const isSelected = d === selectedDay;
-            const isWeekend  = (i % 7 === 0 || i % 7 === 6) && d !== null;
+            const isWeekend  = (i%7===0 || i%7===6) && d !== null;
             return (
-              <div key={i} className="flex items-center justify-center py-0.5">
-                <div
-                  className={`w-7 h-7 flex items-center justify-center rounded-full text-[11px] font-bold transition-all
-                    ${isSelected ? 'scale-110' : ''}
-                  `}
-                  style={isSelected ? {
-                    background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary || theme.primary})`,
-                    color: 'white',
-                    boxShadow: `0 4px 12px ${theme.primary}55`,
-                  } : {
-                    color: !d ? 'transparent' : isWeekend ? theme.primary : '#475569',
-                  }}
-                >
-                  {d ?? ''}
-                </div>
+              <div key={i} style={{ display:'flex', alignItems:'center', justifyContent:'center', padding:'2px 0' }}>
+                <div style={{
+                  width:'26px', height:'26px',
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  borderRadius:'50%', fontSize:'11px', fontWeight:700,
+                  background: isSelected ? `linear-gradient(135deg,${pri},${sec})` : 'transparent',
+                  color: isSelected ? 'white' : (!d ? 'transparent' : isWeekend ? pri : '#475569'),
+                  boxShadow: isSelected ? `0 3px 8px ${pri}55` : 'none',
+                  transform: isSelected ? 'scale(1.1)' : 'none',
+                }}>{d ?? ''}</div>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Footer accent */}
-      <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${theme.primary}, ${theme.secondary || theme.primary}44)` }} />
+      {/* Footer bar */}
+      <div style={{ height:'3px', background:`linear-gradient(90deg, ${pri}, ${sec}44)` }} />
     </div>
   );
 };
@@ -257,64 +249,136 @@ const themeKeys = Object.keys(themes);
 
 // ─── Preview Layouts ──────────────────────────────────────────────────────────
 
-// Scrapbook Layout
+// Scrapbook Layout - 100% inline styles for dom-to-image compatibility
 const ScrapbookPreview = ({ theme, formData, imagePreview, imagePreview2 }) => (
-  <div className="w-full h-full flex flex-col relative overflow-hidden bg-[#fafaf9]">
-    <div className="pt-4 flex flex-col items-center">
-      <h2 className="text-3xl font-black tracking-tighter text-slate-800 drop-shadow-sm mb-0 flex gap-0.5">
-        {['H','a','P','p','Y'].map((l, i) => (
-          <span key={i} className="bg-white px-1 border border-slate-300 shadow-sm" style={{ transform: `rotate(${(i % 2 === 0 ? -1 : 1) * (2 + i)}deg)` }}>{l}</span>
-        ))}
-      </h2>
-      <h1 className="text-4xl font-black tracking-tighter text-slate-900 drop-shadow-md flex gap-0.5 -mt-1">
-        {['B','I','R','T','H','D','A','Y'].map((l, i) => (
-          <span key={i} className="bg-white px-1 border-2 border-slate-400 shadow-sm" style={{ transform: `rotate(${(i % 2 === 0 ? 1 : -1) * (1 + (i % 3))}deg)` }}>{l}</span>
-        ))}
-      </h1>
+  <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', position:'relative', overflow:'hidden',
+    background:'linear-gradient(145deg, #fff5f5 0%, #fef9ec 40%, #f5f0ff 100%)' }}>
+
+    {/* Background confetti layer */}
+    <div style={{ position:'absolute', inset:0, pointerEvents:'none', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:'-40px', left:'-40px', width:'160px', height:'160px', borderRadius:'50%', opacity:0.3,
+        background:'radial-gradient(circle, #fca5a5, transparent)' }} />
+      <div style={{ position:'absolute', bottom:'-40px', right:'-40px', width:'192px', height:'192px', borderRadius:'50%', opacity:0.25,
+        background:'radial-gradient(circle, #c4b5fd, transparent)' }} />
+      <div style={{ position:'absolute', top:'50%', right:'-32px', width:'128px', height:'128px', borderRadius:'50%', opacity:0.2,
+        background:'radial-gradient(circle, #fcd34d, transparent)' }} />
+      {/* Confetti circles */}
+      {[
+        { top:'12%', left:'8%',  size:10, color:'#fb7185', opacity:0.6 },
+        { top:'20%', left:'15%', size:8,  color:'#fbbf24', opacity:0.5 },
+        { top:'8%',  left:'30%', size:12, color:'#a78bfa', opacity:0.4 },
+        { top:'15%', right:'10%',size:8,  color:'#34d399', opacity:0.55 },
+        { top:'30%', right:'5%', size:12, color:'#f472b6', opacity:0.4 },
+        { bottom:'20%', left:'5%', size:10, color:'#60a5fa', opacity:0.5 },
+        { bottom:'15%', left:'20%',size:8,  color:'#fb923c', opacity:0.45 },
+        { bottom:'25%', right:'12%',size:12,color:'#fbbf24', opacity:0.35 },
+        { top:'50%', left:'3%', size:8, color:'#f87171', opacity:0.4 },
+      ].map((c, i) => (
+        <div key={i} style={{ position:'absolute', top:c.top, left:c.left, right:c.right, bottom:c.bottom,
+          width:c.size, height:c.size, borderRadius:'50%', opacity:c.opacity, background:c.color }} />
+      ))}
+      {/* Confetti rectangles */}
+      {[
+        { top:'22%', left:'5%',  w:16, h:6, color:'#fcd34d', rot:'35deg' },
+        { top:'10%', right:'18%',w:12, h:6, color:'#86efac', rot:'-20deg' },
+        { bottom:'30%', left:'12%',w:16,h:6, color:'#c4b5fd', rot:'15deg' },
+        { bottom:'12%', right:'8%',w:12,h:6, color:'#fca5a5', rot:'-30deg' },
+      ].map((r, i) => (
+        <div key={i} style={{ position:'absolute', top:r.top, left:r.left, right:r.right, bottom:r.bottom,
+          width:r.w, height:r.h, borderRadius:'3px', opacity:0.4, background:r.color,
+          transform:`rotate(${r.rot})` }} />
+      ))}
+      {/* Corner emojis */}
+      <span style={{ position:'absolute', top:'5%',  left:'5%',  fontSize:'18px', opacity:0.4, userSelect:'none' }}>🎈</span>
+      <span style={{ position:'absolute', top:'5%',  right:'5%', fontSize:'16px', opacity:0.35,userSelect:'none' }}>✨</span>
+      <span style={{ position:'absolute', bottom:'5%',left:'5%', fontSize:'16px', opacity:0.3, userSelect:'none' }}>🎊</span>
+      <span style={{ position:'absolute', bottom:'5%',right:'5%',fontSize:'18px', opacity:0.35,userSelect:'none' }}>🎉</span>
     </div>
-    <div className="flex flex-1 w-full gap-3 p-3 items-center">
-      <div className="flex-1 space-y-3 flex flex-col items-center">
-        <div className="relative w-full aspect-[4/5] bg-slate-100 border-4 border-white shadow-lg rotate-[-4deg] overflow-hidden">
+
+    {/* Happy Birthday title */}
+    <div style={{ paddingTop:'16px', display:'flex', flexDirection:'column', alignItems:'center' }}>
+      <div style={{ display:'flex', gap:'2px', marginBottom:0 }}>
+        {['H','a','P','p','Y'].map((l, i) => (
+          <span key={i} style={{
+            background:'white', padding:'0 4px', border:'1px solid #cbd5e1',
+            boxShadow:'0 1px 3px rgba(0,0,0,0.1)',
+            fontSize:'28px', fontWeight:900, color:'#1e293b', lineHeight:1.2,
+            transform:`rotate(${(i%2===0?-1:1)*(2+i)}deg)`,
+            display:'inline-block',
+          }}>{l}</span>
+        ))}
+      </div>
+      <div style={{ display:'flex', gap:'2px', marginTop:'-4px' }}>
+        {['B','I','R','T','H','D','A','Y'].map((l, i) => (
+          <span key={i} style={{
+            background:'white', padding:'0 4px', border:'2px solid #94a3b8',
+            boxShadow:'0 2px 6px rgba(0,0,0,0.12)',
+            fontSize:'34px', fontWeight:900, color:'#0f172a', lineHeight:1.2,
+            transform:`rotate(${(i%2===0?1:-1)*(1+(i%3))}deg)`,
+            display:'inline-block',
+          }}>{l}</span>
+        ))}
+      </div>
+    </div>
+
+    {/* Main content row */}
+    <div style={{ display:'flex', flex:1, width:'100%', gap:'12px', padding:'12px', alignItems:'center' }}>
+
+      {/* Left: polaroid photos */}
+      <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:'12px' }}>
+        {/* Tall polaroid */}
+        <div style={{ position:'relative', width:'100%', aspectRatio:'4/5', background:'#f1f5f9',
+          border:'4px solid white', boxShadow:'0 10px 25px rgba(0,0,0,0.15)',
+          transform:'rotate(-4deg)', overflow:'hidden' }}>
           {imagePreview ? (
-            <img src={imagePreview} alt="Photo 1" className="w-full h-full object-cover" />
+            <img src={imagePreview} alt="Photo 1" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-slate-300">
-              <ImageIcon className="w-10 h-10" />
+            <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', color:'#cbd5e1' }}>
+              <ImageIcon style={{ width:'40px', height:'40px' }} />
             </div>
           )}
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-14 h-5 bg-amber-100/60 backdrop-blur-sm -rotate-2 shadow-sm" />
+          {/* Tape strip */}
+          <div style={{ position:'absolute', top:'-8px', left:'50%', transform:'translateX(-50%) rotate(-2deg)',
+            width:'56px', height:'20px', background:'rgba(254,243,199,0.7)', borderRadius:'2px' }} />
         </div>
-        <div className="relative w-3/4 aspect-[4/3] bg-slate-100 border-4 border-white shadow-lg rotate-[3deg] overflow-hidden">
+        {/* Wide polaroid */}
+        <div style={{ position:'relative', width:'75%', aspectRatio:'4/3', background:'#f1f5f9',
+          border:'4px solid white', boxShadow:'0 8px 20px rgba(0,0,0,0.12)',
+          transform:'rotate(3deg)', overflow:'hidden' }}>
           {imagePreview2 ? (
-            <img src={imagePreview2} alt="Photo 2" className="w-full h-full object-cover" />
+            <img src={imagePreview2} alt="Photo 2" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-slate-300">
-              <ImageIcon className="w-8 h-8" />
+            <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', color:'#cbd5e1' }}>
+              <ImageIcon style={{ width:'32px', height:'32px' }} />
             </div>
           )}
         </div>
       </div>
-      <div className="flex-1 flex flex-col items-center gap-4">
-        <div className="italic text-3xl font-serif text-slate-800 -rotate-6">
+
+      {/* Right: date + calendar + dots */}
+      <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:'16px' }}>
+        <div style={{ fontStyle:'italic', fontSize:'28px', fontFamily:'Georgia, serif', color:'#1e293b',
+          transform:'rotate(-6deg)', fontWeight:400 }}>
           {formatDateDisplay(formData.date).split(',')[0]}
         </div>
-        <div className="relative">
+        <div style={{ position:'relative', width:'100%' }}>
           <MiniCalendar theme={theme} dateIso={formData.date} />
-          <div className="absolute -top-3 -right-3 w-8 h-8 rotate-12 opacity-80">
-            <Cake className="w-full h-full text-amber-500" />
+          <div style={{ position:'absolute', top:'-12px', right:'-12px', width:'32px', height:'32px',
+            transform:'rotate(12deg)', opacity:0.8 }}>
+            <Cake style={{ width:'100%', height:'100%', color:'#f59e0b' }} />
           </div>
         </div>
-        {/* Decorative dots below calendar */}
-        <div className="flex gap-2 mt-1 justify-end w-full pr-1">
-          <div className="w-3.5 h-3.5 rounded-full bg-red-400" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.08)' }} />
-          <div className="w-3.5 h-3.5 rounded-full bg-amber-400" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.08)' }} />
-          <div className="w-3.5 h-3.5 rounded-full bg-green-400" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.08)' }} />
+        {/* Decorative dots */}
+        <div style={{ display:'flex', gap:'8px', justifyContent:'flex-end', width:'100%', paddingRight:'4px' }}>
+          <div style={{ width:'14px', height:'14px', borderRadius:'50%', background:'#f87171', boxShadow:'0 1px 2px rgba(0,0,0,0.08)' }} />
+          <div style={{ width:'14px', height:'14px', borderRadius:'50%', background:'#fbbf24', boxShadow:'0 1px 2px rgba(0,0,0,0.08)' }} />
+          <div style={{ width:'14px', height:'14px', borderRadius:'50%', background:'#4ade80', boxShadow:'0 1px 2px rgba(0,0,0,0.08)' }} />
         </div>
-
       </div>
     </div>
   </div>
 );
+
 
 // Gala Layout (dark, elegant, gold)
 const GalaPreview = ({ theme, formData, imagePreview }) => (
@@ -635,24 +699,15 @@ export default function Editor() {
   const handleSave = async () => {
     if (!previewRef.current) return;
     try {
-      const scale = 2;
       const node = previewRef.current;
-      const blob = await domtoimage.toBlob(node, {
-        width:  node.offsetWidth  * scale,
-        height: node.offsetHeight * scale,
-        style: {
-          transform: `scale(${scale})`,
-          transformOrigin: 'top left',
-          width:  node.offsetWidth  + 'px',
-          height: node.offsetHeight + 'px',
-        },
+      const dataUrl = await domtoimage.toPng(node, {
+        cacheBust: true,
+        bgcolor: '#ffffff',
       });
-      const url  = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href     = url;
-      link.download = `${formData.title.replace(/\s+/g, '_')}_invite.png`;
+      link.href     = dataUrl;
+      link.download = `${formData.title.replace(/\s+/g, '_')}_card.png`;
       link.click();
-      URL.revokeObjectURL(url);
     } catch (_err) {
       alert(`Failed to save: ${_err.message}`);
     }
