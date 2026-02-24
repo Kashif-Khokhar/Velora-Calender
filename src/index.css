@@ -35,3 +35,12 @@ body {
   width: 100%;
   height: 100%;
 }
+
+a,
+button,
+select,
+label,
+[role="button"],
+[tabindex]:not([tabindex="-1"]) {
+  cursor: pointer;
+}
