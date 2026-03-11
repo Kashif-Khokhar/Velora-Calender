@@ -82,7 +82,7 @@ export default function About() {
                 
                 <div className="text-center md:text-left flex-1">
                     <h2 className="text-sm font-bold text-orange-600 tracking-widest uppercase mb-2">Meet the Creator</h2>
-                    <h3 className="text-4xl font-bold text-slate-900 mb-4">Kashif Khokhar</h3>
+                    <h3 className="text-4xl font-bold text-slate-900 mb-4">Kashif Ali Khokhar</h3>
                     <p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">
                         Passionate Full Stack Developer and UI/UX enthusiast. Building <span className="font-bold text-rose-600">Velora</span> to bridge the gap between complex design tools and simple, user-friendly experiences.
                     </p>
