@@ -2,7 +2,7 @@
 
 Velora is a sophisticated event invitation platform designed for creating stunning, animated digital invites. From elegant weddings to handcrafted scrapbook birthdays, Velora turns every invitation into a memorable experience.
 
-**[🌐 Live Demo](https://velora-calender.vercel.app/)**
+**[🌐 Live Demo](https://velora-studio-nu.vercel.app/)**
 
 ---
 
@@ -66,4 +66,4 @@ Velora is built with a focus on visual consistency and export fidelity. Key file
 This project is licensed under the MIT License.
 
 ---
-*Developed with ❤️ by [Kashif Khokhar](https://github.com/Kashif-Khokhar)*
+*Developed with ❤️ by [Kashif Ali Khokhar](https://www.linkedin.com/in/kashif-ali-khokhar?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Bhst2MqgwROqhcCwEIYK8Sg%3D%3D)*
