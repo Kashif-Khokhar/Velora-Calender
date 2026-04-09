@@ -21,7 +21,7 @@ export default function Contact() {
                             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-orange-600 shadow-sm"><Mail className="w-5 h-5" /></div>
                             <div>
                                 <h4 className="font-bold text-slate-900">Email</h4>
-                                <p className="text-slate-600">hello@velora.com</p>
+                                <a href="mailto:kashifalikhokharofficial@gmail.com" className="text-slate-600 hover:text-orange-600 transition-colors">kashifalikhokharofficial@gmail.com</a>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
@@ -35,7 +35,7 @@ export default function Contact() {
                             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-orange-600 shadow-sm"><MapPin className="w-5 h-5" /></div>
                             <div>
                                 <h4 className="font-bold text-slate-900">Office</h4>
-                                <p className="text-slate-600">123 Design Street, Creative City</p>
+                                <p className="text-slate-600">Lahore, Pakistan</p>
                             </div>
                         </div>
                     </div>
