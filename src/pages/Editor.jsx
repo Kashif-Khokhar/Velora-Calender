@@ -429,9 +429,9 @@ const ScrapbookPreview = ({ theme, formData, imagePreview, imagePreview2 }) => (
           color: '#1e293b',
           transform: 'rotate(-6deg)',
           fontWeight: 800,
-          textShadow: '1px 1px 2px rgba(0,0,0,0.1)'
+          textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
         }}>
-          {formatDateDisplay(formData.date).split(',')[0]}
+          {formData.name || 'Amy'}
         </div>
         
         <div style={{ position: 'relative', width: '100%', transform: 'scale(0.9)', transformOrigin: 'center' }}>
@@ -716,6 +716,7 @@ export default function Editor() {
   const [imagePreview2, setImagePreview2] = useState(null);
   const [formData, setFormData] = useState({
     title: searchParams.get('title') || 'Amy\'s 25th Birthday',
+    name: 'Amy',
     date: '2026-10-24',
     time: '20:00',
     location: 'Rooftop Bar, NYC'
@@ -851,6 +852,25 @@ export default function Editor() {
                 className="w-full bg-white border border-slate-200 rounded-xl p-3 text-slate-800 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all font-medium text-sm"
               />
             </div>
+
+            {/* Birthday Person Name (Scrapbook Theme) */}
+            {activeTheme === 'scrapbook' && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
+                <label className="block text-xs text-slate-500 mb-1 font-bold uppercase tracking-wider">Birthday Person Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name || ''}
+                  onChange={handleChange}
+                  placeholder="Enter name..."
+                  maxLength={30}
+                  className="w-full bg-white border border-slate-200 rounded-xl p-3 text-slate-800 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all font-medium text-sm"
+                />
+              </motion.div>
+            )}
 
             {/* Date Picker */}
             <div>
